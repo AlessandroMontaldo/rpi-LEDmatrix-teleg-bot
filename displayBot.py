@@ -39,9 +39,9 @@ class DisplayBox(SampleBase):
 
         #load and set up fonts
         font7x13 = graphics.Font()
-        font7x13.LoadFont("../fonts/7x13.bdf") #!!!fill with path to bdf font
+        font7x13.LoadFont("fonts/7x13.bdf") #!!!fill with path to bdf font
         font5x8 = graphics.Font() 
-        font5x8.LoadFont("../fonts/5x8.bdf") #!!!fill with path to bdf font
+        font5x8.LoadFont("fonts/5x8.bdf") #!!!fill with path to bdf font
 
         #set up variables
         myColor = MyColor() #used for customized colors
@@ -70,7 +70,7 @@ class DisplayBox(SampleBase):
                 
                 #SHOW CLOCK
                 #------------ clock  ------------------------------------
-                elif command == "clock":
+                if command == "clock":
                     start_time = time.time() #get starting time
                     clockDuration = 10 #seconds of showing clock
                     x_pos = int(self.matrix.width/2 - clockWidht/2) #Center horizzontally (from lf to rg): half of display width - half of the content
