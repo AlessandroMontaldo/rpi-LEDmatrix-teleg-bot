@@ -37,11 +37,12 @@ class DisplayBox(SampleBase):
     def run(self):
         offscreen_canvas = self.matrix.CreateFrameCanvas()
 
+        _dirpath = os.getcwd() #get script file path
         #load and set up fonts
         font7x13 = graphics.Font()
-        font7x13.LoadFont("fonts/7x13.bdf") #!!!fill with path to bdf font
+        font7x13.LoadFont(str(_dirpath+"/fonts/7x13.bdf")) #!!!fill with path to bdf font
         font5x8 = graphics.Font() 
-        font5x8.LoadFont("fonts/5x8.bdf") #!!!fill with path to bdf font
+        font5x8.LoadFont(str(_dirpath+"/fonts/5x8.bdf")) #!!!fill with path to bdf font
 
         #set up variables
         myColor = MyColor() #used for customized colors
@@ -134,7 +135,7 @@ class DisplayBox(SampleBase):
         content_type, chat_type, chat_id = telepot.glance(msg)
         #setup Buttons layout
         markup = ReplyKeyboardMarkup(keyboard=[
-                        ['Mostra messaggi', 'Cancella messaggi'],
+                        ['Show messages', 'Delete messages'],
                         #['Plain text', KeyboardButton(text='Text only')],
                     ])
 
@@ -143,28 +144,28 @@ class DisplayBox(SampleBase):
             msgText = msg['text']
 
             if content_type != 'text':
-                self.bot.sendMessage(chat_id, emoji.emojize('Solo testo per favore :confounded:', use_aliases=True), reply_markup=markup)
+                self.bot.sendMessage(chat_id, emoji.emojize('Use only text please :confounded:', use_aliases=True), reply_markup=markup)
 
             #-----FIRST ACCESS------
             elif msgText == "/start":
                 #self.bot.sendMessage(chat_id, 'Ciao \nScrivi un messaggio per visualizzarlo sulla DisplayBox', reply_markup=markup)
-                self.bot.sendMessage(chat_id, emoji.emojize('Ciao :smile: \nScrivi un messaggio per visualizzarlo sulla DisplayBox (ma niente emoticons)', use_aliases=True), reply_markup=markup)
+                self.bot.sendMessage(chat_id, emoji.emojize('Hi :smile: \nWrite a message to show it on the DisplayBox (no emoji)', use_aliases=True), reply_markup=markup)
 
             #-----SHOW MESSAGES------
-            elif msgText == "Mostra messaggi":
+            elif msgText == "Show messages":
                 if self.messages == []:
-                    self.bot.sendMessage(chat_id, emoji.emojize(u'Non ci sono messaggi :confounded:', use_aliases=True), reply_markup=markup)
+                    self.bot.sendMessage(chat_id, emoji.emojize(u'There are no messages :confounded:', use_aliases=True), reply_markup=markup)
                 else:   
-                    self.bot.sendMessage(chat_id, emoji.emojize('Ecco la lista dei messaggi:', use_aliases=True), reply_markup=markup)
+                    self.bot.sendMessage(chat_id, emoji.emojize('Here is the list of the messages:', use_aliases=True), reply_markup=markup)
                     for message in self.messages:
                         self.bot.sendMessage(chat_id, message)
 
             #-----DELETE MESSAGES------
-            elif msgText == "Cancella messaggi":
+            elif msgText == "Delete messages":
                 if self.messages == []:
-                    self.bot.sendMessage(chat_id, emoji.emojize(u'La lista è gia vuota :confounded:', use_aliases=True), reply_markup=markup)
+                    self.bot.sendMessage(chat_id, emoji.emojize(u'The list is already empty :confounded:', use_aliases=True), reply_markup=markup)
                 else:       
-                    self.bot.sendMessage(chat_id, emoji.emojize('Piazza pulita :sunglasses:', use_aliases=True), reply_markup=markup)
+                    self.bot.sendMessage(chat_id, emoji.emojize('All gone :sunglasses:', use_aliases=True), reply_markup=markup)
                 #reset list
                 self.messages = []
                 if os.path.isfile(self.tgMsgFile): #check if file exists
@@ -175,7 +176,7 @@ class DisplayBox(SampleBase):
                 #insert msg in messages list
                 self.messages.append(msgText)
                 #send back to user insertion confirmation
-                self.bot.sendMessage(chat_id, emoji.emojize('Messaggio aggiunto alla lista :wink:', use_aliases=True), reply_markup=markup)
+                self.bot.sendMessage(chat_id, emoji.emojize('Message added to the list :wink:', use_aliases=True), reply_markup=markup)
                 self.backUpMsg(msgText, self.tgMsgFile) #add msg in the temporary shown messages
                 self.backUpMsg(msgText, self.tgMsgBackUp) #add msg even permanently
 
